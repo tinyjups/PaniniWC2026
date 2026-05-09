@@ -564,9 +564,28 @@ function openPrint() {
   var win = window.open("", "_blank");
   if (!win) { alert("Please allow pop-ups to open the print preview."); return; }
   win.document.open();
-  win.document.write("<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Panini WC 2026 - " + modeLabel + "</title><style>" + css + "</style></head><body>" + body + "</body></html>");
+  var toolbarCss = "@media print{.ptb{display:none!important}}"
+    + ".ptb{position:fixed;top:0;left:0;right:0;z-index:9999;background:#1a2640;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;box-shadow:0 2px 8px rgba(0,0,0,.5)}"
+    + ".ptb-title{color:#e8c84a;font-size:14px;font-weight:900;letter-spacing:.5px}"
+    + ".ptb-btns{display:flex;gap:8px}"
+    + ".ptb-btn{padding:9px 16px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:Arial,sans-serif;-webkit-appearance:none}"
+    + ".ptb-back{background:rgba(255,255,255,.15);color:#fff}"
+    + ".ptb-print{background:#e8c84a;color:#000}"
+    + ".ptb-body{margin-top:58px}";
+  var toolbar = "<div class='ptb'>"
+    + "<div class='ptb-title'>&#9917; Panini WC 2026</div>"
+    + "<div class='ptb-btns'>"
+    + "<button class='ptb-btn ptb-back' onclick='window.close()'>&#8592; Back</button>"
+    + "<button class='ptb-btn ptb-print' onclick='window.print()'>&#128424; Print / Save PDF</button>"
+    + "</div></div>";
+  win.document.write("<!DOCTYPE html><html><head>"
+    + "<meta charset='UTF-8'>"
+    + "<meta name='viewport' content='width=device-width,initial-scale=1'>"
+    + "<title>Panini WC 2026 - " + modeLabel + "</title>"
+    + "<style>" + css + toolbarCss + "</style>"
+    + "</head><body>" + toolbar + "<div class='ptb-body'>" + body + "</div></body></html>");
   win.document.close();
-  win.onload = function() { win.print(); };
+  // Print triggered manually via button — no auto-print
 }
 
 /* ── TRADE / SHARE ── */
